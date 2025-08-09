@@ -1,5 +1,7 @@
 # skibidi
 cool thingy that does something
 
-# How to use
-When you press every button on both of your controllers, it makes you join code "SKIBIDI".
+# How It Works
+If enabled—which it is by default—it allows you to join the code "SKIBIDI" when all of the buttons on both of your controllers are pressed simultaneously.
+
+This can be enabled / Disabled by the use of any mod that enables and Disables mods, including HauntedModMenu.
