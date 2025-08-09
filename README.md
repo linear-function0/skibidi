@@ -1,2 +1,2 @@
 # skibidi
-cool thingy
+cool thingy that does something
