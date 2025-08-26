@@ -4,8 +4,7 @@ using Photon.Pun;
 
 namespace skibidi
 {
-    [Description("HauntedModMenu")]
-    [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
+    [BepInPlugin("com.linnea.bpgt.skibidi", "skibidi", "1.0.0")]
     public class Main
     {
         static readonly bool rp = ControllerInputPoller.instance.rightControllerPrimaryButton;
@@ -26,32 +25,14 @@ namespace skibidi
 
         public static void Update()
         {
-            if (isEnabled)
+            if (isEnabled & buttonsPressed)
             {
-                if (buttonsPressed)
-                {
-                    PhotonNetwork.Disconnect();
-
-                    PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(SKIBIDI, JoinType.Solo);
-                }
+                PhotonNetwork.Disconnect();
+                PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(SKIBIDI, JoinType.Solo);
             }
         }
 
-        public static void OnEnable()
-        {
-            isEnabled = true;
-        }
-
-        public static void OnDisable()
-        {
-            isEnabled = false;
-        }
-    }
-
-    public class PluginInfo
-    {
-        public const string GUID = "com.linnea.bpgt.skibidi";
-        public const string Name = "skibidi";
-        public const string Version = "1.0.0";
+        public static void OnEnable() => isEnabled = true;
+        public static void OnDisable() => isEnabled = false;
     }
 }
