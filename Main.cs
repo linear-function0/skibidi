@@ -1,38 +1,33 @@
 using BepInEx;
 using GorillaNetworking;
-using Photon.Pun;
 
-namespace skibidi
+namespace Skibidi
 {
-    [BepInPlugin("com.linnea.bpgt.skibidi", "skibidi", "1.0.0")]
+    [BepInPlugin("com.linnea.bpgt.skibidi", "Skibidi", "1.0.0")]
     public class Main
     {
-        static readonly bool rp = ControllerInputPoller.instance.rightControllerPrimaryButton;
-        static readonly bool rs = ControllerInputPoller.instance.rightControllerSecondaryButton;
-        static readonly bool rt = ControllerInputPoller.TriggerFloat(UnityEngine.XR.XRNode.RightHand) > 0.5f;
-        static readonly bool rg = ControllerInputPoller.GripFloat(UnityEngine.XR.XRNode.RightHand) > 0.5f;
+        internal bool IsEnabled { get; set; }
 
-        static readonly bool lp = ControllerInputPoller.instance.leftControllerPrimaryButton;
-        static readonly bool ls = ControllerInputPoller.instance.leftControllerSecondaryButton;
-        static readonly bool lt = ControllerInputPoller.TriggerFloat(UnityEngine.XR.XRNode.LeftHand) > 0.5f;
-        static readonly bool lg = ControllerInputPoller.GripFloat(UnityEngine.XR.XRNode.LeftHand) > 0.5f;
+        internal bool ButtonsPressed =>
+            ControllerInputPoller.instance.rightControllerPrimaryButton &&
+            ControllerInputPoller.instance.rightControllerSecondaryButton &&
+            ControllerInputPoller.instance.rightControllerTriggerButton &&
+            ControllerInputPoller.instance.rightGrab &&
+            ControllerInputPoller.instance.leftControllerPrimaryButton &&
+            ControllerInputPoller.instance.leftControllerSecondaryButton &&
+            ControllerInputPoller.instance.leftControllerTriggerButton &&
+            ControllerInputPoller.instance.leftGrab;
 
-        static readonly bool buttonsPressed = rp && rs && rt && rg && lp && ls && lt && lg;
-
-        static readonly string SKIBIDI = "SKIBIDI";
-
-        static bool isEnabled = true;
-
-        public static void Update()
+        void Update()
         {
-            if (isEnabled & buttonsPressed)
+            if (IsEnabled && ButtonsPressed)
             {
-                PhotonNetwork.Disconnect();
-                PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(SKIBIDI, JoinType.Solo);
+                NetworkSystem.Instance.ReturnToSinglePlayer();
+                PhotonNetworkController.Instance.AttemptToJoinSpecificRoom("SKIBIDI", JoinType.Solo);
             }
         }
 
-        public static void OnEnable() => isEnabled = true;
-        public static void OnDisable() => isEnabled = false;
+        void OnEnable() => IsEnabled = true;
+        void OnDisable() => IsEnabled = false;
     }
 }
